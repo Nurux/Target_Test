@@ -39,7 +39,7 @@ class Tela():
             if event == 'fibo':
                 self.tela_fibonacci()
                 continue
-
+                
             if event == 'f_json':
                 self.tela_faturamento_json()
                 continue

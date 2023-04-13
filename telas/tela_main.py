@@ -11,15 +11,24 @@ class Tela():
     def tela_main(self):
         sg.theme('LightGrey1')
         sg.set_options(font='Roboto 14')
+        
+        size_buttons = (20, 2)
+
+        bts = [ [sg.Button('Testador de Fibonacci', size=size_buttons,key='fibo')],
+                [sg.Button('Faturamento JSON', size=size_buttons, key='f_json')],
+                [sg.Button('Faturamento Estados', size=size_buttons, key='f_estado')],
+                [sg.Button('Inversor de String', size=size_buttons, key='invert_string' )]]
+
+        img = [[sg.Image('./img/logo_small.png')]]
+        buttons = [[sg.Frame(layout=bts, title="Exemplos", expand_y=True)]]
 
         layout = [[sg.Titlebar('Desafios Target')],
-                [sg.Image('./img/logo_small.png')],
-                [sg.Button('Testador de Fibonacci', size=(20, 2), border_width='0',key='fibo')],
-                [sg.Button('Faturamento JSON', key='f_json')],
-                [sg.Button('Faturamento Estados', key='f_estado')],
-                [sg.Button('Inversor de String', key='invert_string' )]]
+                  [sg.Text('Desafios Target', font='Roboto 20', expand_x=True)],
+                  [sg.Column(layout= buttons, element_justification='left', expand_y=True),
+                   sg.Column('', size=(200, 400)),
+                   sg.Column(layout=img, size=(300,400), element_justification='center', expand_x=True),]]
 
-        janela = sg.Window('Salve', layout= layout, size=(500, 500), element_justification='center')
+        janela = sg.Window('Salve', layout= layout, size=(700, 400), text_justification='center')
 
         while True:
             event, value = janela.read()
@@ -68,27 +77,29 @@ class Tela():
                 break
             
             if event == 'calc':
-                nomes = ['sp', 'rj', 'mg', 'es', 'ot']
-                text = ['txt_sp', 'txt_rj', 'txt_mg', 'txt_es', 'txt_ot', 'total']
-                valor = []
+                try:
+                    nomes = ['sp', 'rj', 'mg', 'es', 'ot']
+                    text = ['txt_sp', 'txt_rj', 'txt_mg', 'txt_es', 'txt_ot', 'total']
+                    valor = []
 
-                for i in nomes:
-                    valor.append(value[i])
+                    for i in nomes:
+                        valor.append(value[i])
 
-                calcular = Fatura_Estado()
-                
-                resultados = calcular.calc_estado(valor)
-                cont = 0
+                    calcular = Fatura_Estado()
+                    
+                    resultados = calcular.calc_estado(valor)
+                    cont = 0
 
-                while cont < len(resultados):
+                    while cont < len(resultados):
 
-                    if cont != 5:
-                        janela[text[cont]].update('%2.f' % resultados[cont] + '%')
-                    else:
-                        janela[text[cont]].update(resultados[cont])
+                        if cont != 5:
+                            janela[text[cont]].update('%2.f' % resultados[cont] + '%')
+                        else:
+                            janela[text[cont]].update(resultados[cont])
 
-                    cont+=1
-
+                        cont+=1
+                except:
+                    sg.popup('Primeiro digite os valores para o faturamento!')
                 continue
         
         janela.close()
@@ -113,11 +124,14 @@ class Tela():
                 break
 
             if event == 'click':
-                calcular = Fatu_Json()
-                lista = calcular.calc_json(values['path'])
-                janela_js['maior'].update(lista[0])
-                janela_js['menor'].update(lista[1])
-                janela_js['dias'].update(lista[2])
+                try:
+                    calcular = Fatu_Json()
+                    lista = calcular.calc_json(values['path'])
+                    janela_js['maior'].update(lista[0])
+                    janela_js['menor'].update(lista[1])
+                    janela_js['dias'].update(lista[2])
+                except:
+                    janela_js['menor'].update('Primeiro escolha o arquivo .Json para que seja lido!')
                 continue
         
         janela_js.close()
@@ -126,11 +140,10 @@ class Tela():
         sg.theme('LightGrey1')
 
         layout = [  [sg.Titlebar('Testador de Fibonacci!')],
-                    [sg.Text('Digite um numero inteiro para a verificação: ', font='Roboto 12')],
+                    [sg.Text('Digite um numero inteiro para a verificação: ', font='Roboto 14')],
                     [sg.InputText(key='number')],
-                    [sg.Button('Verificar', key='active')],
-                    [sg.Button('Sair', key='exit')],
-                    [sg.Text(key='output', font='Roboto 12')] ]
+                    [sg.Button('Verificar',expand_x=True ,key='active'), sg.Button('Sair',expand_x=True ,key='exit')],
+                    [sg.Text(key='output', font='Roboto 14', justification='center', expand_x=True, pad=(0, 0, 10, 0))] ]
 
         janela = sg.Window(title='Janela teste', layout= layout)
 
@@ -141,9 +154,12 @@ class Tela():
                 break
 
             if event == 'active':
-                calculo = Calc_Fibo()
-                text = calculo.calc_fibonacci(int(values['number']))
-                janela['output'].update(text)
+                try:
+                    calculo = Calc_Fibo()
+                    text = calculo.calc_fibonacci(int(values['number']))
+                    janela['output'].update(text)
+                except:
+                    janela['output'].update('Digite um numero interio primeiro antes de realizar a verificação!')
                 continue
 
         janela.close()
@@ -167,8 +183,7 @@ class Tela():
 
             if event == 'inv':
                 conversor = Convert()
-                string = conversor.convert(value['string'])
-                janela['output'].update(string)
+                janela['output'].update(conversor.convert(value['string']))
                 continue
         
         janela.close()

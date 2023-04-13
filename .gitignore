@@ -1,5 +1,3 @@
 estudos.md
-/_pycache_/
-/clase/_pycache_
-/controlers/_pycache_
-/telas/_pycache_
+**/_pycache_
+*.pyc

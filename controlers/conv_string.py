@@ -5,6 +5,9 @@ class Convert():
         None
 
     def convert(self, string):
+        if string == '':
+            return 'Primeiro digite uma Frase para ser invertida!'
+
         x = Convert_String()
         
         return  x.converter(string)

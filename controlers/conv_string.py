@@ -11,5 +11,3 @@ class Convert():
         x = Convert_String()
         
         return  x.converter(string)
-        
-        

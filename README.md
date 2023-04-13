@@ -8,6 +8,7 @@ Teste referente a vaga de estágio na empresa Target.
 
 ### Tecnologias usadas 
  - Python
+ - POO
  - PySimpleGUI
  
  ---
